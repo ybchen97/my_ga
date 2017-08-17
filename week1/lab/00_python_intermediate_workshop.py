@@ -70,13 +70,30 @@ Bonus: Sort the list by the length of the names (shortest to longest).
 '''
 
 # list of names
+a_list = ['yuanbo', 'larry', 'sean', 'yiheng', 'tingwei', 'taka']
+
 # last element
+print a_list[-1]
+
 # length of first string
+print len(a_list[0])
+
 # overwrite existing element
+a_list[4] = 'shorty'
+
 # append new element
+a_list.append('Keith')
+
 # change last string to be lowercase
+a_list[-1].lower()
+
 # sort the list in reverse order
+a_list = sorted(a_list, reverse=True)
+
+a_list.sort()
+
 # sort the list by length
+a_list = sorted(a_list, key =len)
 
 
 '''
@@ -99,8 +116,8 @@ for num in nums:            # loop through nums (will execute 5 times)
     doubled.append(num*2)   # append the double of the current value of num
 
 # equivalent list comprehension
-doubled = [num*2 for num in nums]   # expression (num*2) goes first, brackets
-                                    # indicate we are storing results in a list
+assert(doubled == [num*2 for num in nums])      # expression (num*2) goes first, brackets
+                                                # indicate we are storing results in a list
 
 
 '''
@@ -120,19 +137,22 @@ Write a list comprehension that returns: ['A', 'B', 'C']
 letters = ['a', 'b', 'c']
 # iterate through a list of strings,
 # and each string has an 'upper' method
+u_letters = [let.upper() for let in letters]
+
 word = 'abc'
 # iterate through each character
+a_b_c = [char.upper() for char in word]
 
 fruits = ['Apple', 'Banana', 'Cherry']
 # slice the first character from each string
-
+b_list = [fruit[0] for fruit in fruits]
 
 '''
 DICTIONARIES
 '''
 
 # dictionaries are made of key-value pairs (like a real dictionary)
-family = {'dad':'Homer', 'mom':'Marge', 'size':2}
+family = {'dad': 'Homer', 'mom': 'Marge', 'size': 2}
 
 # check the length
 len(family)         # returns 3 (number of key-value pairs)
@@ -178,13 +198,20 @@ Bonus: Do this last step using a list comprehension.
 '''
 
 # returns 'Marge'
-# replaces existing value for 'size'
-# access a list, then append 'Maggie' to it
-# capitalize names by overwriting them
+print family['mom']
 
+# replaces existing value for 'size'
+family['size'] = 5
+
+# access a list, then append 'Maggie' to it
+family['kids'].append('Maggie')
+
+# capitalize names by overwriting them
+family['kids'][0] = 'Bart'
+family['kids'][1] = 'Lisa'
 
 # or, capitalize using a list comprehension and the 'capitalize' string method
-
+family['kids'] = [kid.capitalize() for kid in family['kids']]
 
 # or, slice the string, uppercase the first letter, and concatenate with other letters
 
@@ -220,20 +247,19 @@ How to interact with a REST API:
 - Web console is sometimes available (allows you to explore an API)
 
 API Providers: https://apigee.com/providers
-Echo Nest API Console: https://apigee.com/console/echonest
-API key: http://bit.ly/myechonest
+Echo Nest API Console: https://apigee.com/resources/nytimes
 '''
 
 # request data from the Echo Nest API
-r = requests.get('http://developer.echonest.com/api/v4/artist/top_hottt?api_key=KBGUPZPJZS9PHWNIN&format=json')
+r = requests.get('http://api.nytimes.com/svc/books/v3/lists/current/hardcover-fiction.json?api-key=d28cb3126eae332c6279f9dedf4bb830%3A10%3A64325990&format=json')
 r.text          # looks like a dictionary
 type(r.text)    # actually stored as a string
 r.json()        # decodes JSON
 type(r.json())  # JSON can be represented as a dictionary
 top = r.json()  # store that dictionary
 
-# store the artist data
-artists = top['response']['artists']    # list of 15 dictionaries
+# store the book data
+books = top['results']['books']    # list of 15 dictionaries
 
-# create a list of artist names only
-names = [artist['name'] for artist in artists]  # can iterate through list to access dictionaries
+# create a list of book titles only
+titles = [book['title'] for book in books]  # can iterate through list to access dictionaries

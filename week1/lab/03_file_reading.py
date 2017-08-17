@@ -5,22 +5,22 @@ https://github.com/fivethirtyeight/data/tree/master/airline-safety
 
 # read the whole file at once, return a single string (including newlines)
 # 'rU' mode (read universal) converts different line endings into '\n'
-f = open('data/airline-safety.csv', mode='rU')
+f = open('/Users/yuanbo/Desktop/my_ga/week1/lab/data/airline-safety.csv', mode='rU')
 file_string = f.read()
 f.close()
 
 # use a context manager to automatically close your file
-with open('data/airline-safety.csv', mode='rU') as f:
+with open('/Users/yuanbo/Desktop/my_ga/week1/lab/data/airline-safety.csv', mode='rU') as f:
     file_string = f.read()
 
 # read the file into a list (each list element is one row)
-with open('data/airline-safety.csv', mode='rU') as f:
+with open('/Users/yuanbo/Desktop/my_ga/week1/lab/data/airline-safety.csv', mode='rU') as f:
     file_list = []
     for row in f:
         file_list.append(row)
 
 # do the same thing using a list comprehension
-with open('data/airline-safety.csv', mode='rU') as f:
+with open('/Users/yuanbo/Desktop/my_ga/week1/lab/data/airline-safety.csv', mode='rU') as f:
     file_list = [row for row in f]
 
 # side note: splitting strings
@@ -28,12 +28,13 @@ with open('data/airline-safety.csv', mode='rU') as f:
 'hello DAT students'.split('e')
 
 # split each string (at the commas) into a list
-with open('data/airline-safety.csv', mode='rU') as f:
-    file_nested_list = [row.split(',') for row in f]
+with open('/Users/yuanbo/Desktop/my_ga/week1/lab/data/airline-safety.csv', mode='rU') as f:
+    file_nested_list = [row.split(',') for row in f]    # note split() auto returns a list
+                                                        # this method includes the \n at the end of each line
 
 # do the same thing using the csv module
 import csv
-with open('data/airline-safety.csv', mode='rU') as f:
+with open('/Users/yuanbo/Desktop/my_ga/week1/lab/data/airline-safety.csv', mode='rU') as f:
     file_nested_list = [row for row in csv.reader(f)]
 
 # separate the header and data
@@ -74,6 +75,63 @@ for row in data:
 
 # Part 4
 airline_incidents = dict(zip(airlines, incidents))
+
+# my answers:
+import csv
+with open('/Users/yuanbo/Desktop/my_ga/week1/lab/data/airline-safety.csv', mode='rU') as f:
+    file_nested_list = [row for row in csv.reader(f)]
+
+for row in file_nested_list:
+    print row
+
+header = file_nested_list[0]
+data = file_nested_list[1:]
+
+# Practice 1:
+ave_incidents = [round(((float(row[2]) + float(row[5])) / float(30)), 2) for row in data]
+print ave_incidents
+
+# Practice 2:
+starred = []
+non_starred = []
+
+for row in data:
+    if row[0][-1] == '*':
+        starred.append(row[0][0:-1])
+    else:
+        non_starred.append(row[0])
+
+print non_starred
+
+# Practice 3:
+binary_list = []
+
+for row in data:
+    if row[0][-1] == '*':
+        binary_list.append(1)
+    else:
+        binary_list.append(0)
+
+print binary_list
+
+if len(binary_list) == len(data):
+    print 'True'
+
+# Practice 4:
+clean_list = [row[0][0:-1] if row[0][-1] == '*' else row[0] for row in data]
+
+'''
+clean_list = []
+for rows in data:
+    if rows[0][-1] == '*':
+        clean_list.append(rows[0][0:-1])
+    else:
+        clean_list.append(rows[0])
+'''
+
+final_list = dict(zip(clean_list, ave_incidents))
+
+print final_list
 
 '''
 A few extra things that will help you with the homework
